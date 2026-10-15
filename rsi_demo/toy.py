@@ -34,10 +34,9 @@ class TaskProgram(Toy):
         if key in mem: return mem[key]
         return OPS[inputs["op"]](inputs["a"], inputs["b"]) if self.values["ops"].get(inputs["op"]) else 0
 
-    def learn(self, feedback, ctx):          # 在线学习：答错就把这道题的正确答案记进 memory（produce 实例独占状态）
+    def learn(self, feedback, ctx):          # 在线学习：答错就把该算子技能打开（produce 实例独占状态）
         if feedback.metrics["acc"] < 1:
-            inp = feedback.details["inputs"]
-            self.values.setdefault("memory", {})[f"{inp['op']}:{inp['a']}:{inp['b']}"] = feedback.details["reference"]
+            self.values["ops"][feedback.details["inputs"]["op"]] = True
 
 
 class ImproverProgram(Toy):

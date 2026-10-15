@@ -1013,6 +1013,8 @@ class Run:
                 self.committed = self.opt.serialize_state()
                 if props:
                     self._submit(props)
+                    self._dispatch_ready()
+                    continue                                    # 有空位就再 propose，不必先等完成
                 elif not self.tasks and not self.queue:
                     await self._stop("no_proposals")
             if not self.stopping:
