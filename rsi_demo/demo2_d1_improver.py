@@ -81,6 +81,7 @@ async def demo():
           set(o1["metrics"]) == {"improvement_utility"} and all(set(r["metrics"]) <= {"acc"} for c in (c1, c2) for r in c.records.values()))
     check("内层记录 parent_scope 指向外层协调者记录（两层分开记账、可追溯）",
           all(r["parent_scope"] == {"run_id": orun.run_id, "record_id": o2["record_id"]} for r in c2.records.values()))
+    print("    improvement_utility:", o1["metrics"], o2["metrics"])
     check("同一内层预算下 G2 的 improvement utility > G1", o2["metrics"]["improvement_utility"] > o1["metrics"]["improvement_utility"],
           f"{o1['metrics']} vs {o2['metrics']}")
     check("外层 best = G2（改进器选择本身是一次普通 measure）", best_g.values["code"] == [["enable_failed", 2]])
